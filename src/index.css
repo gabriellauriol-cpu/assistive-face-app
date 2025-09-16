@@ -8,35 +8,65 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Conciergerie IA Design System */
+    --background: 245 25% 8%;
+    --foreground: 220 15% 95%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 245 20% 12%;
+    --card-foreground: 220 15% 95%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 245 20% 12%;
+    --popover-foreground: 220 15% 95%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 260 100% 70%;
+    --primary-foreground: 245 25% 8%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 245 15% 18%;
+    --secondary-foreground: 220 15% 95%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 245 15% 15%;
+    --muted-foreground: 220 10% 65%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 280 100% 85%;
+    --accent-foreground: 245 25% 8%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 220 15% 95%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --success: 142 76% 56%;
+    --success-foreground: 245 25% 8%;
 
-    --radius: 0.5rem;
+    --warning: 38 92% 50%;
+    --warning-foreground: 245 25% 8%;
+
+    --border: 245 15% 20%;
+    --input: 245 15% 18%;
+    --ring: 260 100% 70%;
+
+    /* AI Mascot Colors */
+    --mascot-base: 245 20% 15%;
+    --mascot-glow: 260 100% 70%;
+    --mascot-happy: 142 76% 56%;
+    --mascot-thinking: 280 100% 85%;
+    --mascot-surprised: 38 92% 50%;
+
+    /* Card System */
+    --card-glow: 260 100% 70%;
+    --card-accept: 142 76% 56%;
+    --card-reject: 0 84% 60%;
+    --card-done: 200 100% 70%;
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(260 100% 70%), hsl(280 100% 85%));
+    --gradient-card: linear-gradient(145deg, hsl(245 20% 12%), hsl(245 15% 18%));
+    --gradient-glow: radial-gradient(circle, hsl(260 100% 70% / 0.2) 0%, transparent 70%);
+
+    /* Shadows */
+    --shadow-glow: 0 0 40px hsl(260 100% 70% / 0.3);
+    --shadow-card: 0 8px 32px hsl(245 25% 8% / 0.5);
+    --shadow-elevated: 0 20px 60px hsl(245 25% 8% / 0.7);
+
+    --radius: 1rem;
 
     --sidebar-background: 0 0% 98%;
 
@@ -100,6 +130,101 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
+  }
+}
+
+@layer components {
+  /* Mobile App Container */
+  .mobile-container {
+    @apply max-w-sm mx-auto bg-background min-h-screen relative overflow-hidden;
+  }
+
+  /* Mascot Animations */
+  .mascot-base {
+    @apply w-16 h-16 rounded-full bg-gradient-to-br;
+    background: var(--gradient-card);
+    box-shadow: var(--shadow-glow);
+  }
+
+  .mascot-glow {
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+
+  .mascot-thinking {
+    animation: thinking 1.5s ease-in-out infinite;
+  }
+
+  .mascot-happy {
+    animation: bounce 0.6s ease-in-out;
+  }
+
+  /* Card System */
+  .card-interactive {
+    @apply relative bg-card border border-border rounded-2xl p-6 cursor-pointer transition-all duration-300;
+    background: var(--gradient-card);
+    box-shadow: var(--shadow-card);
+  }
+
+  .card-interactive:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-elevated);
+  }
+
+  .card-swipe-hint {
+    @apply absolute inset-0 pointer-events-none opacity-0 transition-opacity duration-200;
+  }
+
+  .card-swipe-accept {
+    @apply bg-gradient-to-r from-transparent to-green-500/20;
+  }
+
+  .card-swipe-reject {
+    @apply bg-gradient-to-l from-transparent to-red-500/20;
+  }
+
+  /* Navigation */
+  .bottom-nav {
+    @apply fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-sm bg-card/80 backdrop-blur-lg border-t border-border;
+  }
+
+  /* Gesture Indicators */
+  .swipe-indicator {
+    @apply absolute top-4 right-4 text-xs text-muted-foreground opacity-60;
+  }
+}
+
+@keyframes glow {
+  from {
+    box-shadow: 0 0 20px hsl(var(--mascot-glow) / 0.3);
+  }
+  to {
+    box-shadow: 0 0 40px hsl(var(--mascot-glow) / 0.6), 0 0 60px hsl(var(--mascot-glow) / 0.3);
+  }
+}
+
+@keyframes thinking {
+  0%, 100% {
+    transform: scale(1);
+    filter: hue-rotate(0deg);
+  }
+  50% {
+    transform: scale(1.05);
+    filter: hue-rotate(15deg);
+  }
+}
+
+@keyframes bounce {
+  0%, 20%, 53%, 80%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+  40%, 43% {
+    transform: translate3d(0, -8px, 0);
+  }
+  70% {
+    transform: translate3d(0, -4px, 0);
+  }
+  90% {
+    transform: translate3d(0, -2px, 0);
   }
 }
