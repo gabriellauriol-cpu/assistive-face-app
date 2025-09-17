@@ -38,53 +38,79 @@ export const AIMascot = ({ mood = 'neutral', onClick, className }: AIMascotProps
     }
   };
 
-  const getEyeColor = () => {
+  const getEyeStyles = () => {
     switch (mood) {
       case 'thinking':
-        return 'text-mascot-thinking';
+        return {
+          color: 'bg-mascot-thinking',
+          glow: 'shadow-[0_0_20px_hsl(var(--mascot-thinking))]',
+          shape: 'w-3 h-5 rounded-full'
+        };
       case 'happy':
-        return 'text-mascot-happy';
+        return {
+          color: 'bg-mascot-happy',
+          glow: 'shadow-[0_0_20px_hsl(var(--mascot-happy))]',
+          shape: 'w-4 h-2 rounded-full transform rotate-12'
+        };
       case 'surprised':
-        return 'text-mascot-surprised';
+        return {
+          color: 'bg-mascot-surprised',
+          glow: 'shadow-[0_0_20px_hsl(var(--mascot-surprised))]',
+          shape: 'w-4 h-6 rounded-full'
+        };
+      case 'tired':
+        return {
+          color: 'bg-cyan-400',
+          glow: 'shadow-[0_0_15px_hsl(180_100%_70%)]',
+          shape: 'w-4 h-1 rounded-full'
+        };
       default:
-        return 'text-primary';
+        return {
+          color: 'bg-cyan-400',
+          glow: 'shadow-[0_0_25px_hsl(180_100%_70%)]',
+          shape: 'w-3 h-5 rounded-full'
+        };
     }
   };
+
+  const eyeStyles = getEyeStyles();
 
   return (
     <div className={getMascotClasses()} onClick={onClick}>
       <div className="relative">
         {/* Eyes */}
-        <div className="flex space-x-2">
+        <div className="flex space-x-3 items-center justify-center">
           <div className={cn(
-            "w-2 h-2 rounded-full transition-all duration-150",
-            getEyeColor(),
-            blinking ? "h-0.5" : "h-2"
+            "transition-all duration-300",
+            eyeStyles.color,
+            eyeStyles.glow,
+            blinking ? "h-0.5 w-4" : eyeStyles.shape
           )} />
           <div className={cn(
-            "w-2 h-2 rounded-full transition-all duration-150",
-            getEyeColor(),
-            blinking ? "h-0.5" : "h-2"
+            "transition-all duration-300",
+            eyeStyles.color,
+            eyeStyles.glow,
+            blinking ? "h-0.5 w-4" : eyeStyles.shape
           )} />
         </div>
         
         {/* Mouth */}
-        <div className="mt-1 flex justify-center">
+        <div className="mt-2 flex justify-center">
           {mood === 'happy' && (
-            <div className="w-4 h-2 border-2 border-mascot-happy border-t-0 rounded-b-full" />
+            <div className="w-6 h-3 border-2 border-mascot-happy border-t-0 rounded-b-full shadow-[0_0_10px_hsl(var(--mascot-happy))]" />
           )}
           {mood === 'surprised' && (
-            <div className="w-2 h-2 bg-mascot-surprised rounded-full" />
+            <div className="w-3 h-3 bg-mascot-surprised rounded-full shadow-[0_0_10px_hsl(var(--mascot-surprised))]" />
           )}
           {mood === 'tired' && (
-            <div className="w-3 h-1 bg-muted-foreground rounded-full opacity-50" />
+            <div className="w-4 h-1 bg-cyan-400 rounded-full opacity-60" />
           )}
           {(mood === 'neutral' || mood === 'thinking') && (
-            <div className="w-1 h-1 bg-primary rounded-full" />
+            <div className="w-1 h-1 bg-cyan-400 rounded-full shadow-[0_0_5px_hsl(180_100%_70%)]" />
           )}
         </div>
 
-        {/* Glow effect for thinking */}
+        {/* Enhanced glow effect for thinking */}
         {mood === 'thinking' && (
           <div className="absolute inset-0 bg-mascot-thinking/20 rounded-full animate-ping" />
         )}
